@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Servir les fichiers statiques directement
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Tout rediriger vers index.php
+RewriteRule ^ index.php [L]
