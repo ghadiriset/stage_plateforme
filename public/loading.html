@@ -170,7 +170,7 @@
     // Poll the server until it responds, then redirect
     async function checkServer() {
       try {
-        const res = await fetch('/', { method: 'HEAD', cache: 'no-store' });
+        const res = await fetch('/?_check=1', { method: 'HEAD', cache: 'no-store' });
         if (res.ok) {
           clearInterval(interval);
           bar.style.width = '100%';

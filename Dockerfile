@@ -1,5 +1,11 @@
 FROM php:8.2-apache
 
+# Installer les dépendances système pour PostgreSQL et MySQL
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libmariadb-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Extensions PHP
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
