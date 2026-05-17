@@ -23,9 +23,6 @@ COPY . /var/www/html/
 # Permissions uploads
 RUN mkdir -p /var/www/html/public/uploads/reports \
     && chown -R www-data:www-data /var/www/html/public/uploads
-
-    FROM php:8.2-apache
-
 RUN apt-get update && apt-get install -y \
     libzip-dev zip unzip
 
