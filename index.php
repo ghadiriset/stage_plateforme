@@ -66,11 +66,18 @@ match(true) {
             require __DIR__ . '/pages/admin/delete_user.php';
         })(),
 
+    // Admin — import entreprises Excel
+    $uri === '/admin/import-companies' => require __DIR__ . '/pages/admin/import_companies.php',
+
     // Admin — entreprises
     $uri === '/admin/companies' && $method === 'POST' => require __DIR__ . '/pages/admin/add_company.php',
 
     // Admin — stages
     $uri === '/admin/internships' && $method === 'POST' => require __DIR__ . '/pages/admin/add_internship.php',
+
+    // Admin — import Excel
+    $uri === '/admin/import-stages' => require __DIR__ . '/pages/admin/import_stages.php',
+    $uri === '/admin/import-stages/confirm' && $method === 'POST' => require __DIR__ . '/pages/admin/import_stages.php',
 
     // Admin — rapports
     $uri === '/admin/reports' && $method === 'POST' => require __DIR__ . '/pages/admin/add_report.php',

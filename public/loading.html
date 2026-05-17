@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ISET Djerba — Chargement…</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #0d4a8a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .wrap { text-align: center; padding: 2rem; }
+
+    /* Logo */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 3rem;
+      animation: fadeDown .6s ease both;
+    }
+    .badge {
+      background: #f07c1a;
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+    }
+    .brand-text strong { display: block; color: #fff; font-size: 20px; font-weight: 700; }
+    .brand-text small  { color: rgba(255,255,255,.6); font-size: 13px; }
+
+    /* Spinner */
+    .spinner-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 2rem;
+      animation: fadeIn .6s .2s ease both;
+    }
+    .ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid transparent;
+    }
+    .ring1 { border-top-color: #f07c1a; animation: spin 1.2s linear infinite; }
+    .ring2 { border-right-color: rgba(255,255,255,.3); animation: spin 1.8s linear infinite reverse; inset: 8px; }
+
+    /* Text */
+    .msg {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: .5rem;
+      animation: fadeIn .6s .3s ease both;
+    }
+    .sub {
+      color: rgba(255,255,255,.55);
+      font-size: 14px;
+      margin-bottom: 2rem;
+      animation: fadeIn .6s .4s ease both;
+    }
+
+    /* Progress bar */
+    .progress {
+      width: 220px;
+      height: 3px;
+      background: rgba(255,255,255,.15);
+      border-radius: 99px;
+      margin: 0 auto 2rem;
+      overflow: hidden;
+      animation: fadeIn .6s .5s ease both;
+    }
+    .bar {
+      height: 100%;
+      background: #f07c1a;
+      border-radius: 99px;
+      width: 0%;
+      transition: width .4s ease;
+    }
+
+    /* Dots */
+    .dots span {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.4);
+      margin: 0 3px;
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    .dots span:nth-child(2) { animation-delay: .2s; }
+    .dots span:nth-child(3) { animation-delay: .4s; }
+
+    /* Status message */
+    .status {
+      color: rgba(255,255,255,.4);
+      font-size: 12px;
+      animation: fadeIn .6s .6s ease both;
+    }
+
+    @keyframes spin     { to { transform: rotate(360deg); } }
+    @keyframes bounce   { 0%,80%,100% { transform: scale(.8); opacity:.4; } 40% { transform: scale(1.2); opacity:1; } }
+    @keyframes fadeIn   { from { opacity: 0; transform: translateY(8px); } to { opacity:1; transform: none; } }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-8px); } to { opacity:1; transform: none; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="logo">
+      <span class="badge">ISET</span>
+      <div class="brand-text">
+        <strong>ISET Djerba</strong>
+        <small>Plateforme des stages</small>
+      </div>
+    </div>
+
+    <div class="spinner-wrap">
+      <div class="ring ring1"></div>
+      <div class="ring ring2"></div>
+    </div>
+
+    <p class="msg">Démarrage en cours…</p>
+    <p class="sub">
+      Le serveur se réveille, merci de patienter
+      <span class="dots"><span></span><span></span><span></span></span>
+    </p>
+
+    <div class="progress"><div class="bar" id="bar"></div></div>
+
+    <p class="status" id="status">Connexion au serveur…</p>
+  </div>
+
+  <script>
+    const bar    = document.getElementById('bar');
+    const status = document.getElementById('status');
+    let progress = 0;
+
+    const messages = [
+      [10,  'Connexion au serveur…'],
+      [30,  'Initialisation de la base de données…'],
+      [55,  'Chargement des ressources…'],
+      [75,  'Préparation de la plateforme…'],
+      [90,  'Presque prêt…'],
+    ];
+
+    // Animate progress bar
+    function tick() {
+      if (progress < 90) {
+        const step = progress < 40 ? 1.2 : progress < 70 ? 0.6 : 0.3;
+        progress = Math.min(90, progress + step);
+        bar.style.width = progress + '%';
+
+        const msg = messages.filter(m => m[0] <= progress).pop();
+        if (msg) status.textContent = msg[1];
+      }
+    }
+    const interval = setInterval(tick, 180);
+
+    // Poll the server until it responds, then redirect
+    async function checkServer() {
+      try {
+        const res = await fetch('/', { method: 'HEAD', cache: 'no-store' });
+        if (res.ok) {
+          clearInterval(interval);
+          bar.style.width = '100%';
+          status.textContent = 'Prêt ! Redirection…';
+          setTimeout(() => { window.location.href = '/'; }, 400);
+        } else {
+          setTimeout(checkServer, 3000);
+        }
+      } catch {
+        setTimeout(checkServer, 3000);
+      }
+    }
+
+    // Start polling after 2 seconds
+    setTimeout(checkServer, 2000);
+  </script>
+</body>
+</html>
