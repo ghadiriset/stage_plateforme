@@ -9,7 +9,7 @@ $uploadedUrl = '';
 if (!empty($_FILES['pdf_file']['tmp_name'])) {
     $uploadDir = __DIR__ . '/../public/uploads/reports/';
     if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-    $safeName = time() . '-' . preg_replace('/[^a-z0-9\-_]/i', '-', pathinfo($_FILES['pdf_file']['name'], PATHINFO_FILENAME)) . '.pdf';
+    $safeName = time() . '.pdf';
     if (move_uploaded_file($_FILES['pdf_file']['tmp_name'], $uploadDir . $safeName)) {
         $uploadedUrl = '/uploads/reports/' . $safeName;
     }
