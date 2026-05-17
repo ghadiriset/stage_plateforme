@@ -3,7 +3,14 @@ $internships = dbAll('SELECT i.*, c.name AS company_name, c.sector FROM internsh
 $user = currentUser();
 renderHead('Offres de stage'); renderHeader();
 ?>
-<section class="page-hero compact"><div class="container"><span class="eyebrow">Opportunités</span><h1>Offres de stage</h1><p>Parcours clair pour découvrir les offres, postuler et suivre l'avancement.</p></div></section>
+<section class="page-hero compact"><div class="container"><span class="eyebrow">Opportunités</span><h1>Offres de stage</h1><p>Parcours clair pour découvrir les offres, postuler et suivre l'avancement.</p>
+<?php if ($user && $user['role'] === 'admin'): ?>
+<div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+  <a href="/admin/import-internships" class="btn btn-primary">📊 Importer depuis Excel</a>
+  <span style="font-size:0.85rem;color:rgba(255,255,255,0.7)"><?= count($internships) ?> offre(s) dans la base</span>
+</div>
+<?php endif; ?>
+</div></section>
 <section class="section"><div class="container"><div class="card-grid">
 <?php foreach ($internships as $item): ?>
 <article class="info-card internship-card">

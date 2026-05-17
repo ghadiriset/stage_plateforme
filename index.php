@@ -67,7 +67,7 @@ match(true) {
         })(),
 
     // Admin — import entreprises Excel
-    $uri === '/admin/import-companies' => require __DIR__ . '/pages/admin/import_companies.php',
+    $uri === '/admin/import-internships' => require __DIR__ . '/pages/admin/import-internships.php',
 
     // Admin — entreprises
     $uri === '/admin/companies' && $method === 'POST' => require __DIR__ . '/pages/admin/add_company.php',

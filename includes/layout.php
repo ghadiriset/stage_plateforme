@@ -33,7 +33,6 @@ function renderHeader(): void {
     </a>
     <nav class="nav-links">
       <a href="/" class="<?= navClass('/', $path) ?>">Accueil</a>
-      <a href="/entreprises" class="<?= navClass('/entreprises', $path) ?>">Entreprises</a>
       <a href="/stages" class="<?= navClass('/stages', $path) ?>">Stages</a>
       <a href="/rapports" class="<?= navClass('/rapports', $path) ?>">Rapports</a>
       <a href="/a-propos" class="<?= navClass('/a-propos', $path) ?>">À propos</a>
